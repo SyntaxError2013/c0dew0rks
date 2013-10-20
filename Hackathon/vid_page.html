@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Simple Layout for c0dew0rks</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A website to translate audio">
+    <meta name="author" content="c0dew0rks">
+    <link rel="stylesheet" type="text/css" href="./dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./dist/css/main.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="./dist/js/html5shiv.js"></script>
+      <script src="./dist/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <!-- Modal for non supporting browsers. -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Sorry</h4>
+            </div>
+            <div class="modal-body">
+              <p>You are using an outdated browser which is not supported by our website kindly update to the latest version of <a href="https://www.google.com/intl/en/chrome/">Google Chrome</a> or <a href="http://www.mozilla.org/en-US/firefox/new/">Mozilla Firefox</a>. </p>            
+            </div>
+            <div class="modal-footer">
+             
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-hackathon">
+      <div class="container">
+        <div class="navbar-header">
+          <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button> -->
+          <!-- <a class="navbar-brand" href="#">c0dew0rks</a> -->
+        </div>
+        <div class="">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">c0dew0rks App</a></li>
+            <!-- <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li> -->
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <!-- Main Container -->
+    <div class="container" id="main-frame">
+        <div class="row">
+            <div id="drop-zone" class="well">
+                <!-- <video style="" controls  src="./dist/video/John Lennon - Imagine (official video) - YouTube.mp4"></video> -->
+                <!-- Drag and drop plus the progress area. -->
+                <video style="width: 100%" controls preload="metadata"  src="./dist/video/John Lennon - Imagine (official video) - YouTube.mp4"></video>
+                <!-- Video controls -->
+            </div>
+        </div>
+    </div>
+</body>
+<!-- Footer containing scripts -->
+<script type="text/javascript" src="./dist/js/jquery.js"></script>
+<script type="text/javascript" src="./dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./dist/js/modernizer.js"></script>
+<script type="text/javascript">
+/*
+  Code for video player controls.
+*/
+(function($){
+    $(document).ready(function(){
+        var vid_frame = $('#main-frame').find('video')
+        vid_frame.on('canplay', function(){
+            this.volume = 0.4
+            this.currentTime = 10
+            this.pause()
+        })
+    })
+})(window.jQuery)
+</script>
+</html>

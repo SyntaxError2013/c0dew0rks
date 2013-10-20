@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Simple Layout for c0dew0rks</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A website to translate audio">
+    <meta name="author" content="c0dew0rks">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="./dist/js/html5shiv.js"></script>
+      <script src="./dist/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <!-- Modal for non supporting browsers. -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Sorry</h4>
+            </div>
+            <div class="modal-body">
+              <p>You are using an outdated browser which is not supported by our website kindly update to the latest version of <a href="https://www.google.com/intl/en/chrome/">Google Chrome</a> or <a href="http://www.mozilla.org/en-US/firefox/new/">Mozilla Firefox</a>. </p>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">c0dew0rks</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <!-- Main Container -->
+    <div class="container" id="main-frame">
+        <div class="row">
+            <div id="drop-zone" class="well">
+                <!-- <video style="" controls  src="./dist/video/John Lennon - Imagine (official video) - YouTube.mp4"></video> -->
+                <!-- Drag and drop plus the progress area. -->
+                <h3 class="text-danger">Drop a video and its srt file.</h3>
+                <ul id="file-list"></ul>
+                <div class="col-lg-6 col-lg-offset-3 invisible" id="msg-box">
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        <!-- <span class="text-warning">Upload Starting.</span> -->
+                      </div>
+                      <p>Upload statring</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- Footer containing scripts -->
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/modernizer.js"></script>
+<script type="text/javascript">
+    (function($, win, modernizr){
+        "use strict"
+        $(document).ready(function(){
+            var status = win.File && win.FileReader && win.FileList && modernizr.canvas && modernizr.draganddrop && modernizr.audio && modernizr.video
+            if(status){
+                // everything is alright.
+                var drop_zone = $('#drop-zone'),
+                    vid_in = 0,
+                    sub_in = 0,
+                    srt_upload = 0,
+                    files_array = [],
+                    supported_types = ['video/mp4', 'video/avi', 'video/webm', 'video/ogg'],
+                    check_file_type = function(fl){
+                        var vid_st = $.inArray(fl.type, supported_types)
+                        var sub_st = fl.name.substr((Math.max(0, fl.name.lastIndexOf(".")) || Infinity) + 1)
+                        if(vid_in == 1 && sub_in == 1)
+                            return false
+                        else if(vid_in == 1 && vid_st > -1)
+                            return false
+                        else if(vid_st > -1)
+                            return true
+                        else if(sub_in == 1 && sub_st == "srt")
+                            return false
+                        else if(sub_st == "srt")
+                            return true
+                        else
+                            return false;
+                    },
+                    update_list = function(){
+                        $('#file-list').html('')
+                        var tmp_len = files_array.length
+                        for(var i=0; i<tmp_len; ++i)
+                            $('#file-list').append('<li>' + escape(files_array[i].name) + '</li>')
+                        if(tmp_len == 2)
+                            start_upload()
+                    },
+                    disable_drop_events = function(){
+                        drop_zone.off('dragover drop')
+                    },
+                    audio_conversion_process = function(){
+                        console.log("Audio conversion in progress")
+                    },
+                    start_upload = function(){
+                        disable_drop_events()
+                        //alert('Upload of srt can be started')  Write code for handling file upload.
+                        $('#msg-box').removeClass("invisible")
+                        var msg_p = $('#msg-box').find("p")
+                        msg_p.text('upload starting')
+                        var form_data = new FormData()
+                        var srt_file;
+                        if($.inArray(files_array[0].type, supported_types) > -1)
+                            //form_data.append("subs_file", files_array[1])
+                            srt_file = files_array[1]
+                        else
+                            //form_data.append("subs_file", files_array[0])
+                            srt_file = files_array[0]
+                        var freader = new FileReader();
+                        freader.readAsText(srt_file);
+                        freader.onload = function(){
+                            var text = freader.result;
+                            var post_url = "http://192.168.121.161:8089/tl/translate/";
+                            $.post( post_url, { srt: text }, function(data){console.log(data);} );
+                        }
+                        debugger;
+                        /*var xhr = new XMLHttpRequest()
+                        xhr.upload.addEventListner("progress", function(evt){
+                            if(evt.lengthComputable){
+                                var percent = (evt.loaded/evt.total)*100
+
+                            }
+                        }, false)
+                        xhr.addEventListner("load", function(evt){
+                            msg_p.text("upload completed")
+                            audio_conversion_process()
+                        }, false)
+                        xhr.addEventListner("error", function(evt){
+                            alert("Error in uploading srt file.")
+                        }, false)
+                        xhr.open("post", post_url, true)
+                        xhr.send(form_data)
+                        xhr.onload = function(){
+                            console.log(xhr.responseText)
+                        }*/
+                    },
+                    enable_drop_events = function(){
+                        drop_zone.on('dragover',function(evt){
+                            evt.stopPropagation();
+                            evt.preventDefault();
+                            evt.originalEvent.dataTransfer.dropEffect = 'copy';
+                        })
+                        drop_zone.on('drop', function(evt){
+                            evt.stopPropagation()
+                            evt.preventDefault()
+                            var files = evt.originalEvent.dataTransfer.files
+                            for(var i=0, fx; fx = files[i]; ++i){
+                                if(check_file_type(fx)){
+                                    files_array.push(fx);
+                                } else{
+                                    alert(fx.name + " is not supported");
+                                }
+                            }
+                            update_list()
+                        })
+                    }
+
+                    // Enable the events.
+                    enable_drop_events()
+
+            } else{
+                // we need to show the right doors to the user.
+                $('#myModal').modal('show')
+            }
+            /*$('#main-frame').find('video').on('canplay', function(e){
+                this.volume = 0.4
+                this.currentTime = 10
+                this.play()
+            })*/
+        })
+    })(window.jQuery, window, Modernizr)
+</script>
+</html>

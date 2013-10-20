@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My Hohoh Heading</h1>
+
+<p>My first paragraph.</p>
+<form action="tl/translate" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <label>File</label>:<input type="file" name="subtitle" />
+  <input type="submit" />
+</form>
+
+</body>
+</html>

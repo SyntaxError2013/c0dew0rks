@@ -1,0 +1,19 @@
+#drop-zone{
+    min-height: 500px;
+    /*background: #fff url('../img/placeholder-add.png') no-repeat center center;*/
+    background: #fff;
+}
+#drop-zone h3{
+    text-align: center;
+}
+#msg-box{
+    margin-top: 100px;
+}
+.navbar-hackathon{
+    background-color: #363e4c;
+    border-color: #21262e;
+}
+.navbar-hackathon .navbar-nav>.active>a, .navbar-hackathon .navbar-nav>.active>a:hover, .navbar-hackathon .navbar-nav>.active>a:focus{
+    color: #edf3fa;
+    background-color: rgba(0, 0, 0, 0.15);
+}

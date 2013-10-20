@@ -1,0 +1,11 @@
+#drop-zone{
+    min-height: 500px;
+    /*background: #fff url('../img/placeholder-add.png') no-repeat center center;*/
+    background: #fff;
+}
+#drop-zone h3{
+    text-align: center;
+}
+#msg-box{
+    margin-top: 100px;
+}
